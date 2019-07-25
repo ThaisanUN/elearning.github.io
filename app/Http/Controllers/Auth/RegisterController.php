@@ -1,8 +1,10 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
-
+use App\Http\Requests;
+use Illuminate\Http\Request;
 use App\User;
+use Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -48,6 +50,7 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+         
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -57,8 +60,7 @@ class RegisterController extends Controller
             'qoute' => ['string' ],
             
         ]);
-        request('image')->store('uploads','public');
-        request()->all();
+        
     }
 
     /**
@@ -69,12 +71,21 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $request = request();
+
+            $profileImage = $request->file('image');
+            $profileImageSaveAsName = time() . Auth::id() . "-profile." . 
+                                      $profileImage->getClientOriginalExtension();
+
+            $upload_path = 'profile_images/';
+            $profile_image_url = $upload_path . $profileImageSaveAsName;
+            $success = $profileImage->store($upload_path, $profileImageSaveAsName);
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'username' => $data['username'],
             'qoute' => $data['qoute'],
-            'image' => $data['image'],
+            'image' => $profile_image_url,
             'password' => Hash::make($data['password']),
         ]);
     }
