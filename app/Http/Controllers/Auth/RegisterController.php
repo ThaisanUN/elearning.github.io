@@ -79,7 +79,7 @@ class RegisterController extends Controller
 
             $upload_path = 'profile_images/';
             $profile_image_url = $upload_path . $profileImageSaveAsName;
-            $success = $profileImage->store($upload_path, $profileImageSaveAsName);
+            $success = $profileImage->move($upload_path, $profileImageSaveAsName);
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],

@@ -11,8 +11,8 @@
          <div class="mu-page-breadcrumb-area">
            <h2 class="col-md-12">My Profile</h2>
            <div class="text-center">
-            
-           <img src="{{asset('profile_images/&quot;$user->image&quot;')}}" class="img-circle rounded mx-auto d-block" >
+           
+           <img src="{{Auth::user()->image}}"  style="height:150px; weight:150px; border-radius: 50%;" class="rounded mx-auto d-block" >
            </div>
          </div>
        </div>
@@ -33,6 +33,10 @@
   <div class="form-group">
     <label for="qoute">Qoute</label>
     <h4  class="form-control" >{{ Auth::user()->qoute }}</h4>
+  </div>
+  <div class="form-group">
+    <label for="qoute">Date of Join</label>
+    <h4  class="form-control" >{{ Auth::user()->created_at }}</h4>
   </div>
 </div>
 
